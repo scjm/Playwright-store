@@ -10,10 +10,10 @@
 
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("https://pocketbase-railway-production-ad2d.up.railway.app");
+const pb = new PocketBase("<enter your pocketbase url her>");
 
-const ADMIN_EMAIL = process.env.PB_ADMIN_EMAIL || "admin@vault.dev";
-const ADMIN_PASS  = process.env.PB_ADMIN_PASS  || "changeme123!";
+const ADMIN_EMAIL = process.env.PB_ADMIN_EMAIL || "<enter your admin email>";
+const ADMIN_PASS  = process.env.PB_ADMIN_PASS  || "<enter yur admin password>";
 
 const PRODUCTS = [
   { name: "Ceramic Espresso Cup",       category: "drinkware",  price: 28,  stock: 12, image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=60" },
