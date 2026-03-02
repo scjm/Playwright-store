@@ -1,0 +1,30 @@
+code .gitignore
+```
+
+And paste this in:
+```
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables - NEVER commit these
+.env
+.env.local
+.env.production
+
+# Vite cache
+.vite/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*

@@ -14,10 +14,15 @@ export default function OrdersPage() {
     async function load() {
       setLoading(true);
       try {
-        const records = await pb.collection("orders").getFullList({
-          filter: `user = "${user.id}"`,
-          sort: "-created",
-        });
+        const pbUrl = "https://pocketbase-railway-production-ad2d.up.railway.app";
+        const res = await fetch(
+          `${pbUrl}/api/collections/orders/records`,
+          { headers: { Authorization: pb.authStore.token } }
+        );
+        const data = await res.json();
+        const records = (data.items || [])
+          .filter(o => o.user === user.id)
+          .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
         setOrders(records);
       } catch {
         setOrders([]);
@@ -101,7 +106,8 @@ export default function OrdersPage() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {orders.map((order) => {
-              const items = JSON.parse(order.items || "[]");
+              let items = [];
+              try { items = JSON.parse(order.items || "[]"); } catch { items = []; }
               const isNew = order.id === orderId;
               return (
                 <div
@@ -128,11 +134,13 @@ export default function OrdersPage() {
                       >
                         ORDER #{order.id.slice(0, 8).toUpperCase()}
                       </div>
-                      <div style={{ fontSize: 12, color: "var(--text-muted)" }}>
-                        {new Date(order.created).toLocaleDateString("en-US", {
-                          year: "numeric", month: "long", day: "numeric"
-                        })}
-                      </div>
+                      {order.created_at && (
+                        <div style={{ fontSize: 12, color: "var(--text-muted)" }}>
+                          {new Date(order.created_at).toLocaleDateString("en-US", {
+                            year: "numeric", month: "long", day: "numeric"
+                          })}
+                        </div>
+                      )}
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <div

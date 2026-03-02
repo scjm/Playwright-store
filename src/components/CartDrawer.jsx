@@ -28,17 +28,34 @@ export default function CartDrawer({ open, onClose }) {
         ),
         total: total,
         status: "pending",
+        created_at: new Date().toISOString(),
       });
-      // Decrement stock for each item
-      for (const item of items) {
-        const product = await pb.collection("products").getOne(item.id);
-        await pb.collection("products").update(item.id, {
-          stock: Math.max(0, product.stock - item.qty),
-        });
-      }
+
+      // Navigate immediately — don't let stock update block the confirmation page
       clearCart();
       onClose();
       navigate(`/orders/${orderRecord.id}`);
+
+      // Update stock in background (best-effort) using raw fetch for PocketBase v0.23
+      const pbUrl = "https://pocketbase-railway-production-ad2d.up.railway.app";
+      for (const item of items) {
+        try {
+          const getRes = await fetch(`${pbUrl}/api/collections/products/records/${item.id}`, {
+            headers: { Authorization: pb.authStore.token }
+          });
+          const product = await getRes.json();
+          await fetch(`${pbUrl}/api/collections/products/records/${item.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: pb.authStore.token
+            },
+            body: JSON.stringify({ stock: Math.max(0, product.stock - item.qty) })
+          });
+        } catch (stockErr) {
+          console.warn("Stock update failed for", item.name, stockErr);
+        }
+      }
     } catch (e) {
       setError("Failed to place order. Please try again.");
     } finally {

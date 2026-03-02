@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 export default function HomePage() {
   return (
     <div style={{ paddingTop: "var(--nav-h)" }}>
@@ -58,6 +59,9 @@ export default function HomePage() {
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
           <Link to="/shop" className="btn btn-primary" data-testid="hero-shop-btn">
             Browse Shop
+          </Link>
+          <Link to="/shadow-dom" className="btn" data-testid="hero-labs-btn">
+            Explore Labs
           </Link>
           <Link to="/login" className="btn" data-testid="hero-login-btn">
             Sign In
@@ -122,130 +126,59 @@ export default function HomePage() {
           }}
         >
           {FEATURES.map((f) => (
-            <div
-              key={f.label}
-              data-testid={`feature-${f.slug}`}
-              style={{
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius)",
-                padding: "20px",
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-              }}
-            >
-              <span style={{ fontSize: 20 }}>{f.icon}</span>
-              <span
+            f.href ? (
+              <Link
+                key={f.label}
+                to={f.href}
+                data-testid={`feature-${f.slug}`}
                 style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: 16,
-                  letterSpacing: "0.08em",
-                  color: "var(--text)",
-                }}
-              >
-                {f.label}
-              </span>
-              <span style={{ fontSize: 12, color: "var(--text-dim)", lineHeight: 1.5 }}>
-                {f.desc}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Nested scroll demo section */}
-      <section
-        data-testid="nested-scroll-demo"
-        style={{
-          padding: "60px 24px",
-          maxWidth: 900,
-          margin: "0 auto",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 11,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "var(--text-dim)",
-            marginBottom: 16,
-            fontFamily: "var(--font-mono)",
-          }}
-        >
-          Nested Scroll Demo
-        </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: 32,
-            letterSpacing: "0.06em",
-            marginBottom: 24,
-          }}
-        >
-          SCROLL INSIDE SCROLL
-        </h2>
-
-        {/* Outer scroll container */}
-        <div
-          data-testid="outer-scroll"
-          style={{
-            height: 300,
-            overflowY: "auto",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            background: "var(--surface)",
-            padding: 24,
-          }}
-        >
-          <p style={{ color: "var(--text-muted)", marginBottom: 16, fontSize: 13 }}>
-            ↕ This outer container scrolls vertically. Inside it you'll find an inner horizontal scroll.
-          </p>
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} style={{ marginBottom: 24 }}>
-              <div style={{ fontSize: 11, color: "var(--text-dim)", letterSpacing: "0.1em", marginBottom: 8, fontFamily: "var(--font-mono)" }}>
-                SECTION {i + 1}
-              </div>
-              {/* Inner horizontal scroll */}
-              <div
-                data-testid={`inner-scroll-${i}`}
-                style={{
-                  overflowX: "auto",
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  padding: "20px",
                   display: "flex",
+                  flexDirection: "column",
                   gap: 8,
-                  paddingBottom: 8,
+                  textDecoration: "none",
+                  transition: "border-color 0.2s, transform 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                <span style={{ fontSize: 20 }}>{f.icon}</span>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 16, letterSpacing: "0.08em", color: "var(--accent)" }}>
+                  {f.label} →
+                </span>
+                <span style={{ fontSize: 12, color: "var(--text-dim)", lineHeight: 1.5 }}>{f.desc}</span>
+              </Link>
+            ) : (
+              <div
+                key={f.label}
+                data-testid={`feature-${f.slug}`}
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  padding: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
                 }}
               >
-                {Array.from({ length: 10 }, (_, j) => (
-                  <div
-                    key={j}
-                    data-testid={`scroll-cell-${i}-${j}`}
-                    style={{
-                      flexShrink: 0,
-                      width: 100,
-                      height: 60,
-                      background: "var(--surface-2)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 11,
-                      color: "var(--text-dim)",
-                    }}
-                  >
-                    {i},{j}
-                  </div>
-                ))}
+                <span style={{ fontSize: 20 }}>{f.icon}</span>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 16, letterSpacing: "0.08em", color: "var(--text)" }}>
+                  {f.label}
+                </span>
+                <span style={{ fontSize: 12, color: "var(--text-dim)", lineHeight: 1.5 }}>{f.desc}</span>
               </div>
-            </div>
+            )
           ))}
         </div>
       </section>
 
-      {/* YouTube iframe embed section */}
-      <section
+
+      
+      {/* <section
         data-testid="youtube-section"
         style={{
           padding: "60px 24px",
@@ -283,10 +216,10 @@ export default function HomePage() {
             overflow: "hidden",
             border: "1px solid var(--border)",
             background: "var(--surface)",
-          }}
-        >
+          }} */}
+        {/* > */}
           {/* iframe - great for Playwright iframe testing */}
-          <iframe
+          {/* <iframe
             data-testid="youtube-iframe"
             src="https://www.youtube.com/embed/videoseries?list=PLM7ptBsxJm6gG5Gq33REqKnmQPmNPSWGH"
             title="Playwright Testing Tutorial"
@@ -304,7 +237,7 @@ export default function HomePage() {
         <p style={{ marginTop: 12, color: "var(--text-dim)", fontSize: 12, fontFamily: "var(--font-mono)" }}>
           ↑ IFRAME ELEMENT — perfect for testing Playwright's frameLocator() API
         </p>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer
@@ -327,10 +260,10 @@ export default function HomePage() {
 }
 
 const FEATURES = [
-  { icon: "🌑", label: "Shadow DOM", slug: "shadow-dom", desc: "Web Components with encapsulated shadow roots for pierce selector practice" },
-  { icon: "🖼", label: "iFrames", slug: "iframes", desc: "Embedded iframes including YouTube for frameLocator() testing" },
-  { icon: "↕", label: "Nested Scroll", slug: "nested-scroll", desc: "Nested horizontal and vertical scroll containers" },
-  { icon: "🔐", label: "Auth Flows", slug: "auth", desc: "Full login, register, logout, and protected routes" },
-  { icon: "🛒", label: "Cart & Orders", slug: "cart", desc: "Real cart, order placement, and inventory tracking" },
-  { icon: "💾", label: "Live Database", slug: "database", desc: "PocketBase backend with real persistence" },
+  { icon: "🌑", label: "Shadow DOM",    slug: "shadow-dom",    href: "/shadow-dom",    desc: "Web Components with encapsulated shadow roots for pierce selector practice" },
+  { icon: "🖼",  label: "iFrames",       slug: "iframes",       href: "/frames",        desc: "Embedded iframes including YouTube for frameLocator() testing" },
+  { icon: "↕",  label: "Nested Scroll", slug: "nested-scroll", href: "/nested-scroll", desc: "Nested horizontal and vertical scroll containers" },
+  { icon: "🔐", label: "Auth Flows",    slug: "auth",          href: null,             desc: "Full login, register, logout, and protected routes" },
+  { icon: "🛒", label: "Cart & Orders", slug: "cart",          href: null,             desc: "Real cart, order placement, and inventory tracking" },
+  { icon: "💾", label: "Live Database", slug: "database",      href: null,             desc: "PocketBase backend with real persistence" },
 ];

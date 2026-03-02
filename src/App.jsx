@@ -9,6 +9,9 @@ import ShopPage from "./pages/ShopPage";
 import LoginPage from "./pages/LoginPage";
 import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
+import ShadowDomPage from "./pages/ShadowDomPage";
+import FramesPage from "./pages/FramesPage";
+import NestedScrollPage from "./pages/NestedScrollPage";
 
 function AppShell() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -24,6 +27,9 @@ function AppShell() {
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/orders/:orderId" element={<OrdersPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/shadow-dom" element={<ShadowDomPage />} />
+        <Route path="/frames" element={<FramesPage />} />
+        <Route path="/nested-scroll" element={<NestedScrollPage />} />
       </Routes>
     </>
   );

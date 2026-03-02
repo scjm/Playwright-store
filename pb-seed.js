@@ -10,7 +10,7 @@
 
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("http://127.0.0.1:8090");
+const pb = new PocketBase("https://pocketbase-railway-production-ad2d.up.railway.app");
 
 const ADMIN_EMAIL = process.env.PB_ADMIN_EMAIL || "admin@vault.dev";
 const ADMIN_PASS  = process.env.PB_ADMIN_PASS  || "changeme123!";
@@ -39,13 +39,13 @@ async function main() {
     await pb.collections.create({
       name: "products",
       type: "base",
-      schema: [
-        { name: "name",     type: "text",   required: true },
-        { name: "category", type: "text",   required: false },
-        { name: "price",    type: "number", required: true },
-        { name: "stock",    type: "number", required: true },
-        { name: "image",    type: "url",    required: false },
-        { name: "description", type: "text", required: false },
+      fields: [
+        { name: "name",        type: "text",   required: true },
+        { name: "category",    type: "text",   required: false },
+        { name: "price",       type: "number", required: true },
+        { name: "stock",       type: "number", required: true },
+        { name: "image",       type: "url",    required: false },
+        { name: "description", type: "text",   required: false },
       ],
       listRule: "",
       viewRule: "",
@@ -65,11 +65,11 @@ async function main() {
     await pb.collections.create({
       name: "orders",
       type: "base",
-      schema: [
-        { name: "user",   type: "relation", required: true, options: { collectionId: "_pb_users_auth_", cascadeDelete: false } },
-        { name: "items",  type: "text",     required: true },
-        { name: "total",  type: "number",   required: true },
-        { name: "status", type: "text",     required: true },
+      fields: [
+        { name: "user",   type: "text",   required: true },
+        { name: "items",  type: "text",   required: true },
+        { name: "total",  type: "number", required: true },
+        { name: "status", type: "text",   required: true },
       ],
       listRule: "@request.auth.id != ''",
       viewRule: "@request.auth.id != ''",
